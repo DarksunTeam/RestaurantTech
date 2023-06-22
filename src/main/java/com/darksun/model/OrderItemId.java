@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -17,10 +16,8 @@ import java.io.Serializable;
 @Embeddable
 public class OrderItemId implements Serializable {
 	@Serial
-	private static final long serialVersionUID = 1528511812041574507L;
+	private static final long serialVersionUID = 174585823816931866L;
 
-	@ManyToOne
-	private Product   product;
-	@ManyToOne
-	private OrderCard orderCard;
+	private Long productId;
+	private Long orderCardId;
 }
