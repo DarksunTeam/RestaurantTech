@@ -181,3 +181,4 @@ README.html
 #secrets
 .env
 secrets.properties
+/data
