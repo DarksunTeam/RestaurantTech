@@ -1,5 +1,6 @@
 package com.darksun.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class OrderItem implements Serializable {
 	private Product product;
 
 	@ManyToOne
+	@JsonManagedReference
 	@MapsId( "orderCardId" )
 	private OrderCard orderCard;
 }

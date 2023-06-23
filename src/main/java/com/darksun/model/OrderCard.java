@@ -1,5 +1,6 @@
 package com.darksun.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class OrderCard implements Serializable {
 	private Boolean wasPaid;
 	private Boolean wasCredit;
 
+	@JsonBackReference
 	@OneToMany( mappedBy = "orderCard" )
 	private List< OrderItem > items;
 }
