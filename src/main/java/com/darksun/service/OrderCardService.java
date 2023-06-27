@@ -56,6 +56,6 @@ public class OrderCardService {
 		}
 		orderCard.setWasPaid( true );
 		orderCard.setWasCredit( wasCredit );
-		return orderCard;
+		return repository.save( orderCard );
 	}
 }
