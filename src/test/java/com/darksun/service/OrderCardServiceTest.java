@@ -1,11 +1,8 @@
 package com.darksun.service;
 
 import com.darksun.model.OrderCard;
-import com.darksun.model.OrderItem;
-import com.darksun.model.OrderItemId;
-import com.darksun.model.Product;
-import com.darksun.model.type.Category;
 import com.darksun.repository.OrderCardRepository;
+import com.darksun.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,30 +30,7 @@ class OrderCardServiceTest {
 	@BeforeEach
 	void setUp( ) {
 		MockitoAnnotations.openMocks( this );
-
-		OrderCard order1 = new OrderCard( 1L, 1, false, null, new ArrayList<>( ) );
-
-		Product product1 = new Product( 1L, "Soda", new BigDecimal( "2" ),
-										"A good drink to refresh", Category.DRINK );
-		OrderItem item1  = new OrderItem( new OrderItemId( 1L, null ), 2, product1, null );
-		OrderCard order2 = new OrderCard( 2L, 2, false, null, Arrays.asList( item1 ) );
-		item1.setOrderCard( order2 );
-		item1.getId( ).setOrderCardId( 2L );
-
-		Product product2 = new Product( 2L, "Pizza", new BigDecimal( "15.5" ), "Tastes so good",
-										Category.SNACK );
-		OrderItem item2  = new OrderItem( new OrderItemId( 1L, null ), 1, product1, null );
-		OrderItem item3  = new OrderItem( new OrderItemId( 2L, null ), 1, product2, null );
-		OrderCard order3 = new OrderCard( 3L, 2, false, null, Arrays.asList( item2, item3 ) );
-		item2.setOrderCard( order3 );
-		item2.getId( ).setOrderCardId( 3L );
-		item3.setOrderCard( order3 );
-		item3.getId( ).setOrderCardId( 3L );
-
-		orderCardList = new ArrayList<>( );
-		orderCardList.add( order1 );
-		orderCardList.add( order2 );
-		orderCardList.add( order3 );
+		orderCardList = TestUtils.generate( OrderCard.class.getSimpleName( ) );
 	}
 
 	@Test

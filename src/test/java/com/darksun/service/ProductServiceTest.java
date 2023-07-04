@@ -3,6 +3,7 @@ package com.darksun.service;
 import com.darksun.model.Product;
 import com.darksun.model.type.Category;
 import com.darksun.repository.ProductRepository;
+import com.darksun.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,17 +30,7 @@ public class ProductServiceTest {
 	@BeforeEach
 	void setUp( ) {
 		MockitoAnnotations.openMocks( this );
-		Product product1 = new Product( 1L, "Soda", new BigDecimal( "2" ),
-										"A good drink to refresh", Category.DRINK );
-		Product product2 = new Product( 2L, "Beer", new BigDecimal( "3.5" ),
-										"Neither strong nor weak", Category.ALCOHOLIC_DRINK );
-		Product product3 = new Product( 3L, "Shrimp stroganoff", new BigDecimal( "10" ),
-										"The best meal of your life", Category.MEAL );
-
-		productList = new ArrayList<>( );
-		productList.add( product1 );
-		productList.add( product2 );
-		productList.add( product3 );
+		productList = TestUtils.generate( Product.class.getSimpleName( ) );
 	}
 
 	@Test
