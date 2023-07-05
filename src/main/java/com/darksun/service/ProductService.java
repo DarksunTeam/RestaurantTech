@@ -3,6 +3,7 @@ package com.darksun.service;
 import com.darksun.model.Product;
 import com.darksun.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -19,7 +20,7 @@ public class ProductService {
 		if ( product.getId( ) != 0 ) {
 			throw new IllegalArgumentException( "This product is already registered" );
 		}
-		if ( product.getName( ) == null ) {
+		if ( product.getName( ) == null || product.getName( ).trim( ).equals( "" ) ) {
 			throw new IllegalArgumentException( "Product has no name" );
 		}
 		if ( product.getPrice( ) == null
@@ -35,7 +36,9 @@ public class ProductService {
 	}
 
 	public Product readById( Long id ) {
-		return repository.findById( id ).orElseThrow( ( ) -> new EntityNotFoundException( ) );
+		return repository.findById( id )
+						 .orElseThrow( ( ) -> new EntityNotFoundException(
+								 "Product not found with ID: " + id ) );
 	}
 
 	public Product update( Product product ) {
@@ -53,6 +56,11 @@ public class ProductService {
 	}
 
 	public void delete( Long id ) {
-		repository.deleteById( id );
+		try {
+			repository.deleteById( id );
+		} catch ( EmptyResultDataAccessException ex ) {
+			ex.printStackTrace( );
+			throw new EntityNotFoundException( "Product not found with ID: " + id );
+		}
 	}
 }

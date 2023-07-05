@@ -26,7 +26,9 @@ public class OrderCardService {
 	}
 
 	public OrderCard readById( Long id ) {
-		return repository.findById( id ).orElseThrow( ( ) -> new EntityNotFoundException( ) );
+		return repository.findById( id )
+						 .orElseThrow( ( ) -> new EntityNotFoundException(
+								 "Order card not found with ID: " + id ) );
 	}
 
 	public BigDecimal getFinalPrice( Long id ) {
