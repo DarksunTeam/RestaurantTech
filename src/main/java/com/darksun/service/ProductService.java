@@ -41,6 +41,10 @@ public class ProductService {
 								 "Product not found with ID: " + id ) );
 	}
 
+	public List< Product > readAllByNameContaining( String name ) {
+		return repository.findByNameContainingIgnoreCase( name );
+	}
+
 	public Product update( Product product ) {
 		if ( product.getId( ) == null ) {
 			throw new IllegalArgumentException( "This product has no ID" );
