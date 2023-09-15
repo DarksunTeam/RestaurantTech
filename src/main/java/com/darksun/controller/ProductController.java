@@ -30,6 +30,11 @@ public class ProductController {
 		return new ResponseEntity<>( service.readById( id ), HttpStatus.OK );
 	}
 
+	@GetMapping( "/name/{name}" )
+	public ResponseEntity< List< Product > > readByNameContaining( @PathVariable String name ) {
+		return new ResponseEntity<>( service.readAllByNameContaining( name ), HttpStatus.OK );
+	}
+
 	@PutMapping
 	public ResponseEntity< Product > update( @RequestBody Product product ) {
 		return new ResponseEntity<>( service.update( product ), HttpStatus.OK );
