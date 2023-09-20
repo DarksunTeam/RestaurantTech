@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,26 @@ public class ProductServiceTest {
 		Product product = service.readById( 1L );
 		Assertions.assertEquals( product, productList.get( 0 ) );
 		verify( repository, times( 1 ) ).findById( any( ) );
+	}
+
+	@Test
+	void findByNameContaining_Success( ) {
+		List< Product > listPostFind = new ArrayList<>( );
+		listPostFind.add( productList.get( 3 ) );
+		when( repository.findByNameContainingIgnoreCase( any( ) ) ).thenReturn( listPostFind );
+		List< Product > response = service.readAllByNameContaining( "stroganoff" );
+		Assertions.assertEquals( response.get( 0 ), productList.get( 3 ) );
+		Assertions.assertEquals( 1, response.size( ) );
+		verify( repository, times( 1 ) ).findByNameContainingIgnoreCase( any( ) );
+	}
+
+	@Test
+	void findByNameContaining_Fail( ) {
+		List< Product > listPostFind = new ArrayList<>( );
+		when( repository.findByNameContainingIgnoreCase( any( ) ) ).thenReturn( listPostFind );
+		List< Product > products = service.readAllByNameContaining( "mozzarella" );
+		Assertions.assertEquals( 0, products.size( ) );
+		verify( repository, times( 1 ) ).findByNameContainingIgnoreCase( any( ) );
 	}
 
 	@Test
