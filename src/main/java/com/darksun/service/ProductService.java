@@ -46,10 +46,10 @@ public class ProductService {
 	}
 
 	public Product update( Product product ) {
-		if ( product.getId( ) == null ) {
+		if ( product.getId( ) == null || product.getId( ) == 0L ) {
 			throw new IllegalArgumentException( "This product has no ID" );
 		}
-		if ( product.getName( ) == null ) {
+		if ( product.getName( ) == null || product.getName( ).trim( ).equals( "" ) ) {
 			throw new IllegalArgumentException( "Product has no name" );
 		}
 		if ( product.getPrice( ) == null
