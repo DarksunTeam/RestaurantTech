@@ -23,7 +23,7 @@ public class ProductService {
 		if ( !product.getId( ).equals( 0L ) ) {
 			throw new IllegalArgumentException( "This product is already registered" );
 		}
-		if ( product.getName( ) == null || product.getName( ).trim( ).equals( "" ) ) {
+		if ( product.getName( ) == null || product.getName( ).isBlank( ) ) {
 			throw new IllegalArgumentException( "Product has no name" );
 		}
 		if ( product.getPrice( ) == null
@@ -52,7 +52,7 @@ public class ProductService {
 		if ( product.getId( ) == null || product.getId( ) == 0L ) {
 			throw new IllegalArgumentException( "This product has no ID" );
 		}
-		if ( product.getName( ) == null || product.getName( ).trim( ).equals( "" ) ) {
+		if ( product.getName( ) == null || product.getName( ).isBlank( ) ) {
 			throw new IllegalArgumentException( "Product has no name" );
 		}
 		if ( product.getPrice( ) == null
@@ -66,7 +66,6 @@ public class ProductService {
 		try {
 			repository.deleteById( id );
 		} catch ( EmptyResultDataAccessException ex ) {
-			ex.printStackTrace( );
 			throw new EntityNotFoundException( "Product not found with ID: " + id );
 		}
 	}
