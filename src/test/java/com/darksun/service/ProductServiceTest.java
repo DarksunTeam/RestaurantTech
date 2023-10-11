@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	void create( ) {
+	void create_Success( ) {
 		Product product = new Product( 0L, "Soda", new BigDecimal( "2" ), "A good drink to refresh",
 									   Category.DRINK );
 
@@ -43,6 +44,51 @@ public class ProductServiceTest {
 		Product response = service.create( product );
 		Assertions.assertEquals( response, productList.get( 0 ) );
 		verify( repository, times( 1 ) ).save( any( ) );
+	}
+
+	@Test
+	void create_Fail_Id( ) {
+		Product product = new Product( 1L, "Soda", new BigDecimal( "2" ), "A good drink to refresh",
+									   Category.DRINK );
+		String message = "";
+
+		try {
+			service.create( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "This product is already registered", message );
+		verify( repository, times( 0 ) ).save( any( ) );
+	}
+
+	@Test
+	void create_Fail_Name( ) {
+		Product product = new Product( 0L, "   ", new BigDecimal( "2" ), "A good drink to refresh",
+									   Category.DRINK );
+		String message = "";
+
+		try {
+			service.create( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product has no name", message );
+		verify( repository, times( 0 ) ).save( any( ) );
+	}
+
+	@Test
+	void create_Fail_Price( ) {
+		Product product = new Product( 0L, "Soda", new BigDecimal( "-2" ),
+									   "A good drink to refresh", Category.DRINK );
+		String message = "";
+
+		try {
+			service.create( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product with invalid price", message );
+		verify( repository, times( 0 ) ).save( any( ) );
 	}
 
 	@Test
@@ -54,11 +100,24 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	void findById( ) {
+	void findById_Success( ) {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( productList.get( 0 ) ) );
 		Product product = service.readById( 1L );
 		Assertions.assertEquals( product, productList.get( 0 ) );
+		verify( repository, times( 1 ) ).findById( any( ) );
+	}
+
+	@Test
+	void findById_Fail( ) {
+		when( repository.findById( any( ) ) ).thenReturn( Optional.empty( ) );
+		boolean thrown = false;
+		try {
+			service.readById( 10L );
+		} catch ( EntityNotFoundException ex ) {
+			thrown = true;
+		}
+		Assertions.assertTrue( thrown );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
