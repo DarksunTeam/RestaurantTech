@@ -46,7 +46,7 @@ class OrderItemServiceTest {
 	void readAll( ) {
 		when( repository.findAll( ) ).thenReturn( orderItemList );
 		List< OrderItem > response = service.readAll( );
-		Assertions.assertEquals( response, orderItemList );
+		Assertions.assertEquals( orderItemList, response );
 		verify( repository, times( 1 ) ).findAll( );
 	}
 
@@ -55,8 +55,8 @@ class OrderItemServiceTest {
 		when( repository.findByOrderCardId( any( ) ) ).thenReturn(
 				List.of( orderItemList.get( 0 ) ) );
 		List< OrderItem > response = service.readByOrderCardId( 2L );
-		Assertions.assertEquals( response.get( 0 ).getId( ).getOrderCardId( ), 2L );
-		Assertions.assertEquals( response.size( ), 1 );
+		Assertions.assertEquals( 2L, response.get( 0 ).getId( ).getOrderCardId( ) );
+		Assertions.assertEquals( 1, response.size( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 	}
 
@@ -65,9 +65,9 @@ class OrderItemServiceTest {
 		when( repository.findByOrderCardId( any( ) ) ).thenReturn( orderItemList.subList( 1, 3 ) );
 		List< OrderItem > response = service.readByOrderCardId( 3L );
 		for ( OrderItem orderItem : response ) {
-			Assertions.assertEquals( orderItem.getId( ).getOrderCardId( ), 3L );
+			Assertions.assertEquals( 3L, orderItem.getId( ).getOrderCardId( ) );
 		}
-		Assertions.assertEquals( response.size( ), 2 );
+		Assertions.assertEquals( 2, response.size( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 	}
 
@@ -76,9 +76,9 @@ class OrderItemServiceTest {
 		when( repository.findByOrderCardId( any( ) ) ).thenReturn( orderItemList );
 		when( repository.save( any( ) ) ).thenReturn( orderItemList.get( 0 ) );
 		OrderItem response = service.addItem( 1L, 2L );
-		Assertions.assertEquals( response.getQuantity( ), 3 );
-		Assertions.assertEquals( response.getId( ).getProductId( ), 1L );
-		Assertions.assertEquals( response.getId( ).getOrderCardId( ), 2L );
+		Assertions.assertEquals( 3, response.getQuantity( ) );
+		Assertions.assertEquals( 1L, response.getId( ).getProductId( ) );
+		Assertions.assertEquals( 2L, response.getId( ).getOrderCardId( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 		verify( repository, times( 1 ) ).save( any( ) );
 	}
@@ -94,9 +94,9 @@ class OrderItemServiceTest {
 		when( productService.readById( any( ) ) ).thenReturn( productList.get( 0 ) );
 		when( orderCardService.readById( any( ) ) ).thenReturn( orderCardList.get( 0 ) );
 		OrderItem response = service.addItem( 1L, 1L );
-		Assertions.assertEquals( response.getQuantity( ), 1 );
-		Assertions.assertEquals( response.getId( ).getProductId( ), 1L );
-		Assertions.assertEquals( response.getId( ).getOrderCardId( ), 1L );
+		Assertions.assertEquals( 1, response.getQuantity( ) );
+		Assertions.assertEquals( 1L, response.getId( ).getProductId( ) );
+		Assertions.assertEquals( 1L, response.getId( ).getOrderCardId( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 		verify( repository, times( 1 ) ).save( any( ) );
 		verify( productService, times( 1 ) ).readById( any( ) );
@@ -108,9 +108,9 @@ class OrderItemServiceTest {
 		when( repository.findByOrderCardId( any( ) ) ).thenReturn( orderItemList );
 		when( repository.save( any( ) ) ).thenReturn( orderItemList.get( 0 ) );
 		OrderItem response = service.removeItem( 1L, 2L );
-		Assertions.assertEquals( response.getQuantity( ), 1 );
-		Assertions.assertEquals( response.getId( ).getProductId( ), 1L );
-		Assertions.assertEquals( response.getId( ).getOrderCardId( ), 2L );
+		Assertions.assertEquals( 1, response.getQuantity( ) );
+		Assertions.assertEquals( 1L, response.getId( ).getProductId( ) );
+		Assertions.assertEquals( 2L, response.getId( ).getOrderCardId( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 		verify( repository, times( 1 ) ).save( any( ) );
 	}
@@ -121,9 +121,9 @@ class OrderItemServiceTest {
 				List.of( orderItemList.get( 1 ) ) );
 		doNothing( ).when( repository ).delete( any( ) );
 		OrderItem response = service.removeItem( 1L, 3L );
-		Assertions.assertEquals( response.getQuantity( ), 0 );
-		Assertions.assertEquals( response.getId( ).getProductId( ), 1L );
-		Assertions.assertEquals( response.getId( ).getOrderCardId( ), 3L );
+		Assertions.assertEquals( 0, response.getQuantity( ) );
+		Assertions.assertEquals( 1L, response.getId( ).getProductId( ) );
+		Assertions.assertEquals( 3L, response.getId( ).getOrderCardId( ) );
 		verify( repository, times( 1 ) ).findByOrderCardId( any( ) );
 		verify( repository, times( 1 ) ).delete( any( ) );
 	}

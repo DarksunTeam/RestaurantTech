@@ -17,7 +17,7 @@ public class OrderCardService {
 	OrderCardRepository repository;
 
 	public OrderCard create( Integer table ) {
-		OrderCard orderCard = new OrderCard( 0L, table, false, null, new ArrayList<>( ) );
+		OrderCard orderCard = new OrderCard( 0L, table, false, true, new ArrayList<>( ) );
 		return repository.save( orderCard );
 	}
 
