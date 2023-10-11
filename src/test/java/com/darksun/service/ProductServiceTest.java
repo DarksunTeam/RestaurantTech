@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
@@ -142,7 +143,7 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	void update( ) {
+	void update_Success( ) {
 		Product product        = productList.get( 1 );
 		String  newDescription = "For happy moments";
 		product.setDescription( newDescription );
@@ -153,9 +154,120 @@ public class ProductServiceTest {
 	}
 
 	@Test
-	void delete( ) {
+	void update_Fail_Id_null( ) {
+		Product product = productList.get( 1 );
+		product.setId( null );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "This product has no ID", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Id_zero( ) {
+		Product product = productList.get( 1 );
+		product.setId( 0L );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "This product has no ID", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Name_Null( ) {
+		Product product = productList.get( 1 );
+		product.setName( null );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product has no name", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Name_Blank( ) {
+		Product product = productList.get( 1 );
+		product.setName( "" );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product has no name", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Name_JustSpace( ) {
+		Product product = productList.get( 1 );
+		product.setName( "   " );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product has no name", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Price_Null( ) {
+		Product product = productList.get( 1 );
+		product.setPrice( null );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product with invalid price", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void update_Fail_Price_NegativeValue( ) {
+		Product product = productList.get( 1 );
+		product.setPrice( BigDecimal.valueOf( -0.1 ) );
+		String message = "";
+		try {
+			service.update( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product with invalid price", message );
+		verify( repository, times( 0 ) );
+	}
+
+	@Test
+	void delete_Success( ) {
 		doNothing( ).when( repository ).deleteById( any( ) );
 		service.delete( 1L );
+		verify( repository, times( 1 ) ).deleteById( any( ) );
+	}
+
+	@Test
+	void delete_Fail( ) {
+		doThrow( EmptyResultDataAccessException.class ).when( repository ).deleteById( any( ) );
+		String message = "";
+		try {
+			service.delete( 100L );
+		} catch ( EntityNotFoundException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product not found with ID: 100", message );
 		verify( repository, times( 1 ) ).deleteById( any( ) );
 	}
 }
