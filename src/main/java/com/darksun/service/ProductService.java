@@ -17,7 +17,10 @@ public class ProductService {
 	ProductRepository repository;
 
 	public Product create( Product product ) {
-		if ( product.getId( ) != 0 ) {
+		if ( product.getId( ) == null ) {
+			throw new IllegalArgumentException( "Product has no Id. Must be zero." );
+		}
+		if ( !product.getId( ).equals( 0L ) ) {
 			throw new IllegalArgumentException( "This product is already registered" );
 		}
 		if ( product.getName( ) == null || product.getName( ).trim( ).equals( "" ) ) {
