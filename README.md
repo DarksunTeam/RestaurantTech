@@ -14,9 +14,11 @@ Order control system to a technological restaurant
 - :book: **Product registration features** Simple way to make your catalog updated.
 - :credit_card: **Customer payment features** Secure way to charge the customers correctly.
 
-<img width="906" alt="image" src="https://github.com/DarksunTeam/RestaurantTech/assets/19476398/2bf85bcb-4130-45b9-8ad8-38a9479655ac">
-<img width="907" alt="image" src="https://github.com/DarksunTeam/RestaurantTech/assets/19476398/ad8583eb-c997-4824-888f-bb82cd633445">
-<img width="911" alt="image" src="https://github.com/DarksunTeam/RestaurantTech/assets/19476398/8ea98f8b-ed2f-4ae2-9334-49c7fcb8cddd">
+<div align="center">
+	<img width="900" alt="image" src="https://github.com/DarksunTeam/RestaurantTech/assets/19476398/2bf85bcb-4130-45b9-8ad8-38a9479655ac">
+	<img width="900" alt="image" src="https://github.com/DarksunTeam/RestaurantTech/assets/19476398/ad8583eb-c997-4824-888f-bb82cd633445">
+	<img width="900" alt="image" src="https://github.com/coppolaop/RestaurantTech/assets/19476398/38ec025d-9619-47f6-bb88-992b7d0cc84e">
+</div>
 
 
 ## Installation and usage
