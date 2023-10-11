@@ -43,12 +43,27 @@ public class ProductServiceTest {
 
 		when( repository.save( product ) ).thenReturn( productList.get( 0 ) );
 		Product response = service.create( product );
-		Assertions.assertEquals( response, productList.get( 0 ) );
+		Assertions.assertEquals( productList.get( 0 ), response );
 		verify( repository, times( 1 ) ).save( any( ) );
 	}
 
 	@Test
-	void create_Fail_Id( ) {
+	void create_Fail_Id_Null( ) {
+		Product product = new Product( null, "Soda", new BigDecimal( "2" ),
+									   "A good drink to refresh", Category.DRINK );
+		String message = "";
+
+		try {
+			service.create( product );
+		} catch ( IllegalArgumentException ex ) {
+			message = ex.getMessage( );
+		}
+		Assertions.assertEquals( "Product has no Id. Must be zero.", message );
+		verifyNoInteractions( repository );
+	}
+
+	@Test
+	void create_Fail_Id_NotZero( ) {
 		Product product = new Product( 1L, "Soda", new BigDecimal( "2" ), "A good drink to refresh",
 									   Category.DRINK );
 		String message = "";
@@ -59,6 +74,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "This product is already registered", message );
+		verifyNoInteractions( repository );
 		verify( repository, times( 0 ) ).save( any( ) );
 	}
 
@@ -74,7 +90,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product has no name", message );
-		verify( repository, times( 0 ) ).save( any( ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -96,7 +112,7 @@ public class ProductServiceTest {
 	void ReadAll( ) {
 		when( repository.findAll( ) ).thenReturn( productList );
 		List< Product > products = service.readAll( );
-		Assertions.assertEquals( products, productList );
+		Assertions.assertEquals( productList, products );
 		verify( repository, times( 1 ) ).findAll( );
 	}
 
@@ -105,7 +121,7 @@ public class ProductServiceTest {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( productList.get( 0 ) ) );
 		Product product = service.readById( 1L );
-		Assertions.assertEquals( product, productList.get( 0 ) );
+		Assertions.assertEquals( productList.get( 0 ), product );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
@@ -164,7 +180,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "This product has no ID", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -178,7 +194,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "This product has no ID", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -192,7 +208,6 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product has no name", message );
-		verify( repository, times( 0 ) );
 	}
 
 	@Test
@@ -206,7 +221,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product has no name", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -220,7 +235,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product has no name", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -234,7 +249,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product with invalid price", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
@@ -248,7 +263,7 @@ public class ProductServiceTest {
 			message = ex.getMessage( );
 		}
 		Assertions.assertEquals( "Product with invalid price", message );
-		verify( repository, times( 0 ) );
+		verifyNoInteractions( repository );
 	}
 
 	@Test
