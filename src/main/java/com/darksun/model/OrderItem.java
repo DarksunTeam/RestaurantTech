@@ -1,9 +1,10 @@
 package com.darksun.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -12,7 +13,8 @@ import javax.persistence.MapsId;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,7 +31,7 @@ public class OrderItem implements Serializable {
 	private Product product;
 
 	@ManyToOne
-	@JsonManagedReference
+	@JsonIgnoreProperties( "items" )
 	@MapsId( "orderCardId" )
 	private OrderCard orderCard;
 }

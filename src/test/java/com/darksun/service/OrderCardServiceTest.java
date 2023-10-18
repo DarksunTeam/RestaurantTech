@@ -37,7 +37,7 @@ class OrderCardServiceTest {
 	void create( ) {
 		when( repository.save( any( ) ) ).thenReturn( orderCardList.get( 0 ) );
 		OrderCard response = service.create( 2 );
-		Assertions.assertEquals( response.getTable( ), 1 );
+		Assertions.assertEquals( 1, response.getTable( ) );
 		Assertions.assertFalse( response.getWasPaid( ) );
 		Assertions.assertNull( response.getWasCredit( ) );
 		Assertions.assertTrue( response.getItems( ).isEmpty( ) );
@@ -48,7 +48,7 @@ class OrderCardServiceTest {
 	void readAll( ) {
 		when( repository.findAll( ) ).thenReturn( orderCardList );
 		List< OrderCard > orderCards = service.readAll( );
-		Assertions.assertEquals( orderCards, orderCardList );
+		Assertions.assertEquals( orderCardList, orderCards );
 		verify( repository, times( 1 ) ).findAll( );
 	}
 
@@ -57,7 +57,7 @@ class OrderCardServiceTest {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( orderCardList.get( 0 ) ) );
 		OrderCard orderCard = service.readById( 1L );
-		Assertions.assertEquals( orderCard, orderCardList.get( 0 ) );
+		Assertions.assertEquals( orderCardList.get( 0 ), orderCard );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
@@ -66,7 +66,7 @@ class OrderCardServiceTest {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( orderCardList.get( 1 ) ) );
 		BigDecimal response = service.getFinalPrice( 2L );
-		Assertions.assertEquals( response, new BigDecimal( "4" ) );
+		Assertions.assertEquals( new BigDecimal( "4" ), response );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
@@ -75,7 +75,7 @@ class OrderCardServiceTest {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( orderCardList.get( 2 ) ) );
 		BigDecimal response = service.getFinalPrice( 3L );
-		Assertions.assertEquals( response, new BigDecimal( "17.5" ) );
+		Assertions.assertEquals( new BigDecimal( "17.5" ), response );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
@@ -84,7 +84,7 @@ class OrderCardServiceTest {
 		when( repository.findById( any( ) ) ).thenReturn(
 				Optional.ofNullable( orderCardList.get( 0 ) ) );
 		BigDecimal response = service.getFinalPrice( 1L );
-		Assertions.assertEquals( response, new BigDecimal( "0" ) );
+		Assertions.assertEquals( new BigDecimal( "0" ), response );
 		verify( repository, times( 1 ) ).findById( any( ) );
 	}
 
@@ -94,7 +94,7 @@ class OrderCardServiceTest {
 				Optional.ofNullable( orderCardList.get( 0 ) ) );
 		when( repository.save( any( ) ) ).thenReturn( orderCardList.get( 0 ) );
 		OrderCard response = service.updateTable( 1L, 5 );
-		Assertions.assertEquals( response.getTable( ), 5 );
+		Assertions.assertEquals( 5, response.getTable( ) );
 		verify( repository, times( 1 ) ).findById( any( ) );
 		verify( repository, times( 1 ) ).save( any( ) );
 	}
